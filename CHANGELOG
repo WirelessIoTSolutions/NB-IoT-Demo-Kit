@@ -1,0 +1,25 @@
+# CHANGELOG
+
+# 1.0.1 (2019-02-27)
+
+* more infos for the user on the OLED screen
+
+# 1.0.1 (2019-02-25)
+
+* bug fixes
+* modified JSON Buffer to prevent receive error
+
+# 1.0.1 (2019-02-20)
+
+* implemennted a commandsManager class to interpret and execute
+  commands received via backchannel
+* modified HTTPRequestClient to show the user how the payload 
+  really looks like
+
+# 1.0.1 (2019-02-19)
+
+* fix of the IMSI Error on UART
+
+# 1.0.0 (2019-02-18)
+
+* initial version
