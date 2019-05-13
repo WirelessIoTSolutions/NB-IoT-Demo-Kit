@@ -148,7 +148,7 @@ _**Note:** The Demo-Kit is shipped with the SIM already in place._
 
 * Connect the 790MHz -960 MHz SMA NB-IoT antenna to the SMA connector **C3** next to the LEDs.
 * Connect the GPS antenna to the SMA connector **C12** next to the SIM card tray .
-* Bridge the two pins between the SMA connectors with a jumper to supply the GPS antenna with power.
+* Make sure the two pins between the SMA connectors are bridged with a jumper to supply the GPS antenna with power.
 
 #### 2.2.2. Connect the Sensors
 Before you can connect sensors, you need to attach the Base Shield onto the Tuino096 and set the power switch to 3.3V. Once the Base Shield
@@ -240,7 +240,7 @@ Set the frequency band of your operator (default is band 8), by uncommenting one
 If you are using a different provider than the ones listed in the code, just set the last number of the macro according to your operator.
 
 #### 3.2.4. Set endpoint
-Decide to which endpoint your want to send the data (default is the mm1 Technology NB-IoT Relay-Service):
+Decide to which endpoint your want to send the data. If you want to send date to the mm1 Technology NB-IoT Relay-Service, please refer to the information-sheet included within your Demo-Kit.
 
 ```
 /* ENDPOINT WHERE YOU WANT TO SEND DATA */
