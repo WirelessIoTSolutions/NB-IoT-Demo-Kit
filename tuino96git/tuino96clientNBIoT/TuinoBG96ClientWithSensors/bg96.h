@@ -67,6 +67,7 @@ uint8_t BG96_isConnectedToNBIoT(char *operator_code);
 uint8_t BG96_isConnectedToGSM(char *operator_code);
 
 uint8_t BG96_setOperator(char *code);
+uint8_t BG96_setOperator(char *code, char* act);
 uint8_t BG96_setGSMConfigs(char *apn);
 uint8_t BG96_setNBIoTConfigs(char *apn, char *band);
 uint8_t BG96_setCatM1(char *apn, char *band);

@@ -149,7 +149,7 @@ void BG96_checkGSMConnectionProperties(char *operator_code, char *ip, uint16_t p
 { 
   int retries = 0;
   while(BG96_deviceIsConnected(operator_code) != 0){
-    BG96_setOperator(operator_code);
+    BG96_setOperator(operator_code,"0");
     if(retries > 7)
       Serial.println("Please check SIM Card and restart the Application!");
     retries++;
@@ -373,6 +373,18 @@ uint8_t BG96_setOperator(char *operator_code)
   return BG96_OK;
 }
 
+uint8_t BG96_setOperator(char *operator_code, char* act)
+{
+  char tmp_string[128];
+
+  sprintf(tmp_string,"AT+COPS=1,2,\"%s\",%s",operator_code, act);
+
+  at_send_command(tmp_string);
+  if ( read_for_responses_dual("OK","ERROR",BG96_LONG_TIMEOUT) != 0 )
+    return  BG96_KO;
+ 
+  return BG96_OK;
+}
 
 uint8_t BG96_isNetworkAttached(int *attach_status, bool mode)
 {
