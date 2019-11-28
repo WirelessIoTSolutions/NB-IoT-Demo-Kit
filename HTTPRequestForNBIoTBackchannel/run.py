@@ -3,8 +3,8 @@
 @description simulation of a user
              that wants to send payload back to its NBIoT device
 @author      htemizel
-Find out more about mm1 Technology:
-Company:     http://mm1-technology.de/
+Find out more about WIOTS:
+Company:     https://wireless-iot-solutions.com/wp/
 """
 import http_client
 from http_client import HTTP_Client
