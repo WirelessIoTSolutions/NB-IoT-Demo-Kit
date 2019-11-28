@@ -1,7 +1,7 @@
 <img src="Screenshots/Demo-Kit_Header.PNG" height="150">
 
 # NB-IoT Demo-Kit Quickstart Guide
-The following section provides information about the contents of the mm1 Technology NB-IoT Demo-Kit and guides you through setup and configuration. If you need help getting started or in case you encounter any bugs or
+The following section provides information about the contents of the WIOTS NB-IoT Demo-Kit and guides you through setup and configuration. If you need help getting started or in case you encounter any bugs or
 broken links, please contact support@nbiot-solution.de.
 
 ## Table of Contents
@@ -105,7 +105,7 @@ Get additional information from [Wentronic](https://www.wentronic.de/en/notebook
 
 ### 1.10 SIM
 UICC SIM card with NB-IoT connectivity powered by [1NCE](https://1nce.com/).
-25 MB of data transferrable via the mm1 Technology NB-IoT Relay-Service over six months.
+25 MB of data transferrable via the WIOTS NB-IoT Relay-Service over six months.
 
 <a name="anchor2"></a>
 ## 2 Getting Started
@@ -133,7 +133,7 @@ This project depends on the 'ArduinoJson' library to handle objects and arrays. 
 _**NOTE:** Make sure to install a stable version and noneof the listed betas. We recommend using version 5.x._
 
 #### 2.2.4. Download the project files
-Finally, download the **_'tuino96nbiotclient'_** project from the [mm1 Technology GitHub](https://github.com/mm1technology/demokit-nbiot-tuino096) page by either clicking on **_'clone or download'_** in the upper right corner of your screen and selecting
+Finally, download the **_'tuino96nbiotclient'_** project from the [WIOTS GitHub](https://github.com/mm1technology/demokit-nbiot-tuino096) page by either clicking on **_'clone or download'_** in the upper right corner of your screen and selecting
 **_'Download ZIP'_** or [cloning the project](https://docs.gitlab.com/ee/gitlab-basics/command-line-commands.html) using Git and shell commands.
 
 ### 2.2. Hardware setup
@@ -240,7 +240,7 @@ Set the frequency band of your operator (default is band 8), by uncommenting one
 If you are using a different provider than the ones listed in the code, just set the last number of the macro according to your operator.
 
 #### 3.2.4. Set endpoint
-Decide to which endpoint your want to send the data. If you want to send date to the mm1 Technology NB-IoT Relay-Service, please refer to the information-sheet included within your Demo-Kit.
+Decide to which endpoint your want to send the data. If you want to send date to the WIOTS NB-IoT Relay-Service, please refer to the information-sheet included within your Demo-Kit.
 
 ```
 /* ENDPOINT WHERE YOU WANT TO SEND DATA */
@@ -343,7 +343,7 @@ how the code is running and what the program is doing at a specific moment. The 
 | *Finished Payload for SendMsg: _ _rJyu{"humidity":39.4,"temp":24.2,"distance":3,"lightlum":79,"lightlux":147.3058}* | SendMsg instructions including all sensor data that will be send to the Relay-Service
 
 ### 5.2. Monitor Output in your Webbrowser
-You can easily connect your Tuino096 to your favorite  IoT platform using the mm1 Technology NB-IoT Relay-Service. For detailed instructions, please refer to the Readme.md in the corresponding repository listed below:
+You can easily connect your Tuino096 to your favorite  IoT platform using the WIOTS NB-IoT Relay-Service. For detailed instructions, please refer to the Readme.md in the corresponding repository listed below:
 
 | **Platform** | **Module** | **Description**
 | ------ | ------ | ------ |
@@ -364,7 +364,7 @@ Please refer to GitHub for all available versions of this project.
 
 <a name="anchor8"></a>
 ## 8. License
-This project is licensed under mm1-Technology GmbH.
+This project is licensed under WIOTS GmbH.
 
 <a name="anchor9"></a>
 ## 9. Acknowledgments
