@@ -2,7 +2,8 @@
  * @file rotaryAngleSensor.h
  * @description Functions to drive the OLED display
  * @author htemizel
- * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
+ * ATTENTION: Need a subscription to Nb-IoT relay service and client library on IoT device to work
+ * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
  * @licence MIT licence
  *
  * Find out more about WIOTS:

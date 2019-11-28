@@ -4,10 +4,9 @@
  *              received from the Relay-Service via Backchannel
  * @author htemizel
  * ATTENTION: Need a subscription to Nb-IoT relay service and client library on IoT device to work
- * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
+ * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
  * @licence MIT licence
  *
- * Find out more about mm1 Technology:
  * Find out more about WIOTS:
  * Company:     https://wireless-iot-solutions.com/wp/
  * GitHub:  https://github.com/WirelessIoTSolutions/

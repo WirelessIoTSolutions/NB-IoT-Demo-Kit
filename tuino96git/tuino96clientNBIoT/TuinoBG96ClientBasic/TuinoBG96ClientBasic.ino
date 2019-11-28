@@ -4,7 +4,7 @@
  *              based on NBIoT with the Tuino96
  * @author htemizel
  * ATTENTION: Need a subscription to Nb-IoT relay service and client library on IoT device to work
- * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
+ * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
  * 
  *
  * Find out more about WIOTS:
