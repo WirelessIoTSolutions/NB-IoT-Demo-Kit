@@ -8,9 +8,9 @@
  * with any other service than the mm1 Technology relay service of copy or use this software into other 
  * projects than related to the mm1 Technology relay service.
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company:     https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include "led.h"
 

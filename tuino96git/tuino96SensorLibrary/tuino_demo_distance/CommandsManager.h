@@ -8,8 +8,9 @@
  * @licence MIT licence
  *
  * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company:     https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #ifndef COMMANDSMANAGER_h_
 #define COMMANDSMANAGER_h_

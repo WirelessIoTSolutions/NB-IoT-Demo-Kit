@@ -3,8 +3,9 @@
  * @description Example Client on how to use the Relay-Service 
  *              based on GSM with the Tuino96(with example Sensors)
  * @author htemizel
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
+ * Find out more about WIOTS:
+ * Company:     https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include <ArduinoJson.h>
 #include "Wire.h"

@@ -3,8 +3,9 @@
  * @description Functions to drive the Seed Ultrasonic Ranger
  * @author FrankieChu
  * @reworker htemizel
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
+ * Find out more about WIOTS:
+ * Company:     https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include <stdio.h>
 #include <string.h>
