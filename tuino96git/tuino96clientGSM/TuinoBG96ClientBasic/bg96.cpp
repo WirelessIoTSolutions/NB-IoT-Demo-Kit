@@ -5,9 +5,9 @@
  * @reworker htemizel
  * @licence MIT licence
  *
- * Find out more about WIOTS:
- * Company:     https://wireless-iot-solutions.com/wp/
- * GitHub:  https://github.com/WirelessIoTSolutions/
+ * Find out more about mm1 Technology:
+ * Company: http://mm1-technology.de/
+ * GitHub:  https://github.com/mm1technology/
  */
 #include "tuino096.h"
 #include "at_client.h"
@@ -512,6 +512,35 @@ uint8_t BG96_enableNMEA(void)
     return  BG96_KO;    
  
   return BG96_OK;
+}
+
+uint8_t BG96_getCeLevel(char *ceLevel)
+{
+    char temp[128] = { '\0' };
+    char temp2[128] = { '\0' };
+    
+    at_send_command("AT+QCFG=\"celevel\"");
+    
+    if (at_read_dual_and_copy_to_buffer(temp,"OK","ERROR", 128, BG96_BOOT_TIMEOUT) != AT_COMMAND_SUCCESS )
+        return  BG96_KO;
+    
+    char *tmp = strstr (temp,"+QCFG: ");
+    if(tmp == NULL){
+        Serial.println("Could not extract CE-LEVEL");
+        return  BG96_KO;
+    }
+    
+    strncpy(temp2, tmp,  18);
+    char *pch = strstr (temp2,"\",");
+    if(pch == NULL){
+        Serial.println("Could not extract CE-LEVEL");
+        return  BG96_KO;
+    }
+    
+    pch = pch + 2;
+    ceLevel[0] = *pch;
+    
+    return BG96_OK;
 }
 
 uint8_t BG96_getCoordinates(char *latitute, char *longitute)

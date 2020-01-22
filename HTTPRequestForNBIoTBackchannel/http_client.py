@@ -3,8 +3,8 @@
 @description Class to enable the use of a request client to simulate a user
              that wants to send payload back to its NBIoT device
 @author      htemizel
-Find out more about WIOTS:
-Company:     https://wireless-iot-solutions.com/wp/
+Find out more about mm1 Technology:
+Company:     http://mm1-technology.de/
 """
 import requests
 import json

@@ -1,7 +1,7 @@
-<img src="Screenshots/Demo-Kit_Header.PNG" height="150">
+<img src="Screenshots/01_WIS_REA_Logo_mitZusatz_RGB_blau.png" height="150">
 
 # NB-IoT Demo-Kit Quickstart Guide
-The following section provides information about the contents of the WIOTS NB-IoT Demo-Kit and guides you through setup and configuration. If you need help getting started or in case you encounter any bugs or
+The following section provides information about the contents of the Wireless IoT Solutions NB-IoT Demo-Kit and guides you through setup and configuration. If you need help getting started or in case you encounter any bugs or
 broken links, please contact support@nbiot-solution.de.
 
 ## Table of Contents
@@ -104,8 +104,7 @@ USB 2.0 cable for synching and charging, high-speed data transmission up to 480 
 Get additional information from [Wentronic](https://www.wentronic.de/en/notebook-and-pc/usb/usb-2.0/8704/easy-usb-sync-and-charging-cable-3-m-black).
 
 ### 1.10 SIM
-UICC SIM card with NB-IoT connectivity powered by [1NCE](https://1nce.com/).
-25 MB of data transferrable via the WIOTS NB-IoT Relay-Service over six months.
+UICC SIM card with NB-IoT connectivity powered by [1NCE](https://1nce.com/), NB-IoT relay service allows for up to 1440 messages per day.
 
 <a name="anchor2"></a>
 ## 2 Getting Started
@@ -133,7 +132,7 @@ This project depends on the 'ArduinoJson' library to handle objects and arrays. 
 _**NOTE:** Make sure to install a stable version and noneof the listed betas. We recommend using version 5.x._
 
 #### 2.2.4. Download the project files
-Finally, download the **_'tuino96nbiotclient'_** project from the [WIOTS GitHub](https://github.com/mm1technology/demokit-nbiot-tuino096) page by either clicking on **_'clone or download'_** in the upper right corner of your screen and selecting
+Finally, download the **_'tuino96nbiotclient'_** project from the [Wireless IoT Solutions GitHub page](https://github.com/mm1technology/demokit-nbiot-tuino096) page by either clicking on **_'clone or download'_** in the upper right corner of your screen and selecting
 **_'Download ZIP'_** or [cloning the project](https://docs.gitlab.com/ee/gitlab-basics/command-line-commands.html) using Git and shell commands.
 
 ### 2.2. Hardware setup
@@ -148,7 +147,7 @@ _**Note:** The Demo-Kit is shipped with the SIM already in place._
 
 * Connect the 790MHz -960 MHz SMA NB-IoT antenna to the SMA connector **C3** next to the LEDs.
 * Connect the GPS antenna to the SMA connector **C12** next to the SIM card tray .
-* Make sure the two pins between the SMA connectors are bridged with a jumper to supply the GPS antenna with power.
+* Bridge the two pins between the SMA connectors with a jumper to supply the GPS antenna with power.
 
 #### 2.2.2. Connect the Sensors
 Before you can connect sensors, you need to attach the Base Shield onto the Tuino096 and set the power switch to 3.3V. Once the Base Shield
@@ -240,7 +239,7 @@ Set the frequency band of your operator (default is band 8), by uncommenting one
 If you are using a different provider than the ones listed in the code, just set the last number of the macro according to your operator.
 
 #### 3.2.4. Set endpoint
-Decide to which endpoint your want to send the data. If you want to send date to the WIOTS NB-IoT Relay-Service, please refer to the information-sheet included within your Demo-Kit.
+Decide to which endpoint your want to send the data (default is the Wireless IoT Solutions NB-IoT Relay-Service):
 
 ```
 /* ENDPOINT WHERE YOU WANT TO SEND DATA */
@@ -342,16 +341,6 @@ how the code is running and what the program is doing at a specific moment. The 
 | *+QIRD: 0* | Datasize (in bytes) received over UART, typically be the response of the relay service, followed by the content of what exactly is received |
 | *Finished Payload for SendMsg: _ _rJyu{"humidity":39.4,"temp":24.2,"distance":3,"lightlum":79,"lightlux":147.3058}* | SendMsg instructions including all sensor data that will be send to the Relay-Service
 
-### 5.2. Monitor Output in your Webbrowser
-You can easily connect your Tuino096 to your favorite  IoT platform using the WIOTS NB-IoT Relay-Service. For detailed instructions, please refer to the Readme.md in the corresponding repository listed below:
-
-| **Platform** | **Module** | **Description**
-| ------ | ------ | ------ |
-| **Adafruit.io** | [NB-IoT Relay Service Cloud Connector](https://github.com/mm1technology/nbiot-rs-cloud-connector) | *Use this module to connect to Adafruit.io* |
-| **Azure** | [NB-IoT Relay Service Cloud Connector](https://github.com/mm1technology/nbiot-rs-cloud-connector) |  *Use this module to connect to MS Azure* |
-| **NodeRED** | [NodeRED NB-IoT Connector](https://github.com/mm1technology/node-red-contrib-nbiot-connector) | *Use this module to connect to NodeRED* |
-| **AWS** | [NB-IoT Relay Service Cloud Connector](https://google.de) | *Coming soon...* |
-
 <a name="anchor6"></a>
 ## 6. Versioning
 Please refer to GitHub for all available versions of this project.
@@ -364,7 +353,7 @@ Please refer to GitHub for all available versions of this project.
 
 <a name="anchor8"></a>
 ## 8. License
-This project is licensed under WIOTS GmbH.
+This project is licensed under Wireless IoT Solutions GmbH.
 
 <a name="anchor9"></a>
 ## 9. Acknowledgments

@@ -4,12 +4,12 @@
  *              based on NBIoT with the Tuino96(with example Sensors)
  * @author htemizel
  * ATTENTION: Need a subscription to Nb-IoT relay service and client library on IoT device to work
- * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
+ * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
  * 
  *
- * Find out more about WIOTS:
- * Company:     https://wireless-iot-solutions.com/wp/
- * GitHub:  https://github.com/WirelessIoTSolutions/
+ * Find out more about mm1 Technology:
+ * Company: http://mm1-technology.de/
+ * GitHub:  https://github.com/mm1technology/
  */
 #include <ArduinoJson.h>
 #include "Wire.h"
@@ -196,6 +196,12 @@ void loop() {
     connectionType = "EDGE";
   }
 
+  //int to store the rsrp value
+  int rsrp;
+  if(BG96_QCSQ(&rsrp) == BG96_OK){
+    root["rsrp"] = rsrp;
+  }
+
   //putting the sensor data into the JSON object
   root["connectStat"] = connectionStatus;
   root["connectType"] = connectionType;
@@ -204,6 +210,12 @@ void loop() {
   root["distance"] = centimeters;
   root["lightlum"] = lum;
   root["lightlux"] = lux;
+
+  //putting CE-LEVEL  into the JSON object only if there is CE-LEVEL available
+  char ceLevel[2] = {'\0'};
+  if(BG96_getCeLevel(ceLevel) == BG96_OK){
+    root["celevel"] = ceLevel;
+  }
 
   //rssi and bit error rate ints
   int rssi = 0;

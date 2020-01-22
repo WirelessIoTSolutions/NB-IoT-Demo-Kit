@@ -3,9 +3,8 @@
  * @description Example Client on how to use the Relay-Service 
  *              based on GSM with the Tuino96(with example Sensors)
  * @author htemizel
- * Find out more about WIOTS:
- * Company:     https://wireless-iot-solutions.com/wp/
- * GitHub:  https://github.com/WirelessIoTSolutions/
+ * Find out more about mm1 Technology:
+ * Company: http://mm1-technology.de/
  */
 #include <ArduinoJson.h>
 #include "Wire.h"
@@ -196,6 +195,12 @@ void loop() {
   root["lightlum"] = lum;
   root["lightlux"] = lux;
 
+  //putting CE-LEVEL  into the JSON object only if there is CE-LEVEL available
+  char ceLevel[2] = {'\0'};
+  if(BG96_getCeLevel(ceLevel) == BG96_OK){
+    root["celevel"] = ceLevel;
+  }
+  
   //rssi and bit error rate ints
   int rssi = 0;
   int ber = 0;

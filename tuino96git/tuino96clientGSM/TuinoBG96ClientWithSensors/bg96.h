@@ -5,9 +5,9 @@
  * @reworker htemizel
  * @licence MIT licence
  *
- * Find out more about WIOTS:
- * Company:     https://wireless-iot-solutions.com/wp/
- * GitHub:  https://github.com/WirelessIoTSolutions/
+ * Find out more about mm1 Technology:
+ * Company: http://mm1-technology.de/
+ * GitHub:  https://github.com/mm1technology/
  */
 #ifndef _GMX_BG96_H_
 #define _GMX_BG96_H_
@@ -51,6 +51,8 @@
 uint8_t BG96_init();
 uint8_t BG96_getIMEI(char *data, uint8_t max_size);
 uint8_t BG96_getIMSI(char *data, uint8_t max_size);
+
+uint8_t BG96_getCeLevel(char *ceLevel);
 
 void BG96_checkNBIoTConnectionProperties(char *operator_code, char *ip, uint16_t port);
 void BG96_checkGSMConnectionProperties(char *operator_code, char *ip, uint16_t port);

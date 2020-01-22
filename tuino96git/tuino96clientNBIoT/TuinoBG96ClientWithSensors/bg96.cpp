@@ -5,9 +5,9 @@
  * @reworker htemizel
  * @licence MIT licence
  *
- * Find out more about WIOTS:
- * Company:     https://wireless-iot-solutions.com/wp/
- * GitHub:  https://github.com/WirelessIoTSolutions/
+ * Find out more about mm1 Technology:
+ * Company: http://mm1-technology.de/
+ * GitHub:  https://github.com/mm1technology/
  */
 #include "tuino096.h"
 #include "at_client.h"
@@ -149,7 +149,7 @@ void BG96_checkGSMConnectionProperties(char *operator_code, char *ip, uint16_t p
 { 
   int retries = 0;
   while(BG96_deviceIsConnected(operator_code) != 0){
-    BG96_setOperator(operator_code,"0");
+    BG96_setOperator(operator_code);
     if(retries > 7)
       Serial.println("Please check SIM Card and restart the Application!");
     retries++;
@@ -373,18 +373,6 @@ uint8_t BG96_setOperator(char *operator_code)
   return BG96_OK;
 }
 
-uint8_t BG96_setOperator(char *operator_code, char* act)
-{
-  char tmp_string[128];
-
-  sprintf(tmp_string,"AT+COPS=1,2,\"%s\",%s",operator_code, act);
-
-  at_send_command(tmp_string);
-  if ( read_for_responses_dual("OK","ERROR",BG96_LONG_TIMEOUT) != 0 )
-    return  BG96_KO;
- 
-  return BG96_OK;
-}
 
 uint8_t BG96_isNetworkAttached(int *attach_status, bool mode)
 {
@@ -526,6 +514,35 @@ uint8_t BG96_enableNMEA(void)
   return BG96_OK;
 }
 
+uint8_t BG96_getCeLevel(char *ceLevel)
+{
+    char temp[128] = { '\0' };
+    char temp2[128] = { '\0' };
+    
+    at_send_command("AT+QCFG=\"celevel\"");
+    
+    if (at_read_dual_and_copy_to_buffer(temp,"OK","ERROR", 128, BG96_BOOT_TIMEOUT) != AT_COMMAND_SUCCESS )
+        return  BG96_KO;
+    
+    char *tmp = strstr (temp,"+QCFG: ");
+    if(tmp == NULL){
+        Serial.println("Could not extract CE-LEVEL");
+        return  BG96_KO;
+    }
+    
+    strncpy(temp2, tmp,  18);
+    char *pch = strstr (temp2,"\",");
+    if(pch == NULL){
+        Serial.println("Could not extract CE-LEVEL");
+        return  BG96_KO;
+    }
+    
+    pch = pch + 2;
+    ceLevel[0] = *pch;
+    
+    return BG96_OK;
+}
+
 uint8_t BG96_getCoordinates(char *latitute, char *longitute)
 {
   char temp[128] = { '\0' };
@@ -596,6 +613,47 @@ uint8_t BG96_getCoordinates(char *latitute, char *longitute)
   delay(200);
   */
   return BG96_OK;
+}
+
+uint8_t BG96_QCSQ(int *rsrp)
+{
+  char str[60] = { '\0' };
+  int init_size = strlen(str);
+  char *strCAT = "CAT-NB1";
+  char delim[] = " ";
+  char *ptr;
+  
+  at_send_command("AT+QCSQ");
+
+  memset(str,0,sizeof(str));
+  if ( at_read_dual_and_copy_to_buffer(str,"OK","ERROR", 128,  BG96_DEFAULT_TIMEOUT) != AT_COMMAND_SUCCESS ){
+    return BG96_KO;
+  } 
+
+  ptr = strstr(str, strCAT);
+  if(ptr != NULL){
+    while(*ptr != ','){
+      ptr++;
+    }
+    ptr++;
+    while(*ptr != ','){
+      ptr++;
+    }
+    ptr++;
+    int i = 0;
+    char recvBytes[4] = {'\0'};
+    char c = ',';
+    while(*ptr != c){
+      recvBytes[i] = *ptr;
+      i++;
+      ptr++;
+    }
+
+    *rsrp = atoi(recvBytes);
+    return BG96_OK;
+  }
+  
+  return BG96_KO;
 }
 
 uint8_t BG96_RXData(char *data, uint8_t max_size)
