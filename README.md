@@ -345,9 +345,7 @@ Please refer to GitHub for all available versions of this project.
 
 <a name="anchor7"></a>
 ## 7. Authors
-* **Author:**  Hakan Temizel
-* **Supervisor:** Patrik John
-* **PM:** Marten Oswald
+Hakan Temizel, Patrik John
 
 <a name="anchor8"></a>
 ## 8. License
