@@ -1,5 +1,3 @@
-<img src="Screenshots/01_WIS_REA_Logo_mitZusatz_RGB_blau.png" height="150">
-
 # NB-IoT Demo-Kit Quickstart Guide
 The following section provides information about the contents of the Wireless IoT Solutions NB-IoT Demo-Kit and guides you through setup and configuration. If you need help getting started or in case you encounter any bugs or
 broken links, please contact support@nbiot-solution.de.
