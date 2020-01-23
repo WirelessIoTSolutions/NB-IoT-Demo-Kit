@@ -351,7 +351,7 @@ Please refer to GitHub for all available versions of this project.
 
 <a name="anchor8"></a>
 ## 8. License
-This project is licensed under Wireless IoT Solutions GmbH.
+This project is licensed under a MIT license by Wireless IoT Solutions GmbH.
 
 <a name="anchor9"></a>
 ## 9. Acknowledgments
