@@ -3,15 +3,15 @@
  * @description Implementing the protocol commands
  * @author htemizel
  * ATTENTION: Need a subscription to Nb-IoT relay service and client library on IoT device to work
- * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
- * @licence proprietary licence - mm1 Technology grants all users of the mm1 Technology relay service 
+ * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
+ * @licence proprietary licence - WIOTS grants all users of the WIOTS relay service 
  * the right to use this software for evaluation and testing. It is not allowed to use this software 
- * with any other service than the mm1 Technology relay service of copy or use this software into other 
- * projects than related to the mm1 Technology relay service.
+ * with any other service than the WIOTS relay service of copy or use this software into other 
+ * projects than related to the WIOTS relay service.
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company: https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include <Arduino.h>
 #include "PayloadProcesser.h"
@@ -61,7 +61,7 @@ int VSNBPClient::SendRegister(){
     delay(SEND_DELAY);
     return SUCCESS;
   }else{
-    Serial.println("Register not sendable");
+    Serial.println("Register not sendable\n");
     return SERVER_NOT_REACHABLE;
   }
 }
@@ -81,7 +81,7 @@ int VSNBPClient::RegisterProcedure(){
           return SUCCESS;
         }
         recvRetries++;
-        Serial.println("No Acknolegde received at ReceiveRegisterAck, polling again in 6.5s.\n");
+        Serial.println("DEBUG - No Acknowlegde received at ReceiveRegisterAck, polling again in 6.5s.\n");
         delay(RETRY_INTERVALL);
       }
       return NO_ACKNOLEDGE;
@@ -102,10 +102,11 @@ void VSNBPClient::CheckBackchannelPayload(){
   memset(this->backchannelBuffer, '\0', BUFLEN);
   if(strlen(this->recvBuf)>2){
     appendBackchanneldata(this->backchannelBuffer, this->recvBuf);
-    Serial.print("Relay-Service Backchannel Payload: ");
+    Serial.print("DEBUG - Relay-Service DownChannel Payload received from Endpoint: ");
     Serial.println(this->backchannelBuffer);
+    Serial.println("");
   }else{
-    Serial.println("No Backchannel Payload received from Relay Service");
+    Serial.println("DEBUG - No DownChannel Payload received from Relay Service\n");
   }
 }
 
@@ -116,12 +117,14 @@ void VSNBPClient::CheckBackchannelPayload(){
  */
 int VSNBPClient::ContainsBackchannelPayload(char* searchStr){
   if((strstr(this->backchannelBuffer, searchStr)) != NULL){
-    Serial.print("BackchannelBuffer contains: ");
+    Serial.print("DEBUG - DownchannelBuffer contains: ");
     Serial.println(searchStr);
+    Serial.println("");
     return SUCCESS;
   }else{
-    Serial.print("BackchannelBuffer doesn't contain: ");
+    Serial.print("DEBUG - DownchannelBuffer doesn't contain: ");
     Serial.println(searchStr);
+    Serial.println("");
     return FAILED;
   }
 }
@@ -154,7 +157,7 @@ int VSNBPClient::SendMsg(char* sensorDataBuf){
     delay(SEND_DELAY);
     return SUCCESS;
   }else{
-    Serial.println("Msg not sendable");
+    Serial.println("DEBUG - Payload not sendable\n");
     return SERVER_NOT_REACHABLE;
   }
 }
@@ -169,12 +172,14 @@ int VSNBPClient::SendMsgProcedure(char* sensorDataBuf){
   int recvRetries = 0;
   
   if(this->registerStatus != SUCCESS){
-    Serial.println("Registration to the Relay Service needed!");
+    Serial.println("DEBUG - Registration to the Relay Service needed!\n");
+    Serial.println("__________________REGISTRATION_______________\n");
     this->registerStatus = RegisterProcedure();
   }else{
-    Serial.println("Already Registered, no registraion needed!");
+    Serial.println("DEBUG - Already Registered, no registraion needed!\n");
   }
   if(this->registerStatus == SUCCESS){
+    Serial.println("_______________SEND_USER_PAYLOAD_LOOP____________\n");
     while(sendRetries < MAX_RETRIES){
       if(SendMsg(sensorDataBuf) == SUCCESS){
         while(recvRetries < MAX_RETRIES){
@@ -183,7 +188,7 @@ int VSNBPClient::SendMsgProcedure(char* sensorDataBuf){
             return SUCCESS;
           }
           recvRetries++;
-          Serial.println("No Acknolegde received at ReceiveSendMsgAck, polling in 6.5s.\n");
+          Serial.println("DEBUG - No Acknowlegde received at ReceiveSendMsgAck, polling in 6.5s.\n");
           delay(RETRY_INTERVALL);
         }
         this->registerStatus = FAILED;

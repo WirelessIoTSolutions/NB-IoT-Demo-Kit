@@ -4,15 +4,15 @@
  *              send and receive buffers
  * @author htemizel
  * ATTENTION: Need a subscription to Nb-IoT relay service and client library on IoT device to work
- * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
- * @licence proprietary licence - mm1 Technology grants all users of the mm1 Technology relay service 
+ * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
+ * @licence proprietary licence - WIOTS grants all users of the WIOTS relay service 
  * the right to use this software for evaluation and testing. It is not allowed to use this software 
- * with any other service than the mm1 Technology relay service of copy or use this software into other 
- * projects than related to the mm1 Technology relay service.
+ * with any other service than the WIOTS relay service of copy or use this software into other 
+ * projects than related to the WIOTS relay service.
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company: https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include "PayloadProcesser.h"
 #include "Parser.h"
@@ -44,8 +44,9 @@ void SetupBufForRegister(char *sendBuf, String imsi){
     SetProtocolVersion(sendBuf, ProtocolVersion1);
     SetProtocolCommand(sendBuf, Register);
     SetIMSI(sendBuf, imsi);
-    Serial.print("Finished Payload for Register: ");
+    Serial.print("DEBUG - Sendung Buffer for Register request contains: ");
     Serial.println(sendBuf);
+    Serial.println("");
 }
 
 /**
@@ -59,10 +60,13 @@ void SetupBufForSendMsg(char *sendBuf, char* Payload){
     SetSharedsecret(sendBuf, SharedSecret);
     SetPayload(sendBuf, Payload);
     if(getLength(sendBuf)<7){
-        Serial.println("Payload is to short to be compatible for SendMsg");
+        Serial.println("DEBUG - Payload is to short to be compatible for SendMsg");
     }
-    Serial.print("Finished Payload for SendMsg: ");
+    Serial.print("DEBUG - Sending Buffer with User Payload contains: ");
     Serial.println(sendBuf);
+    Serial.println("");
+    
+    
 }
 
 /**
@@ -75,15 +79,15 @@ int checkRegisterAcknoledge(char *recvBuf) {
     if(getProtocolVersion(recvBuf) == ProtocolVersion1){
         if(getProtocolCommand(recvBuf) == RegisterAck) {
             SharedSecret = getSharedsecret(recvBuf);
-            Serial.println("Register got Acknoledged");
-            Serial.println("Sharedsecret:" + SharedSecret + "\n");
+            Serial.println("DEBUG - Register Acknowledged by End-Point \n");
+            Serial.println("DEBUG - Sharedsecret:" + SharedSecret + "\n");
             return 1;
         }else{
-            Serial.println("No Acknoledgement for Register\n");
+            Serial.println("DEBUG - No Acknoledgement for Register\n");
             return 0;
         }
     }else{
-        Serial.println("Wrong Protoclversion at Registeracknoledgement\n");
+        Serial.println("DEBUG - Wrong Protoclversion at Registeracknoledgement\n");
         return 0;
     }
 }
@@ -97,14 +101,14 @@ int checkRegisterAcknoledge(char *recvBuf) {
 int checkSendRecvAcknoledge(char *recvBuf) {
   if(getProtocolVersion(recvBuf) == ProtocolVersion1){
     if(getProtocolCommand(recvBuf) == SendRespAck){
-      Serial.println("SendMsg got acknoledged \n");
+      Serial.println("DEBUG - Send Payload Acknowledged by End-Point \n");
       return 1;
     }else{
-      Serial.println("Wrong Protoclcomand at SendRespAck\n");
+      Serial.println("DEBUG - Wrong Protoclcomand at SendRespAck\n");
       return 0;
     }
   }else{
-    Serial.println("Wrong Protoclversion at SendMsgacknoledgement\n");
+    Serial.println("DEBUG - Wrong Protoclversion at SendMsgacknoledgement\n");
     return 0;
   }
 }

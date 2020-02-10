@@ -2,12 +2,12 @@
  * @file lightSensor.cpp
  * @description Functions to drive the OLED display
  * @author htemizel
- * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
+ * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
  * @licence MIT licence
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company: https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include "lightSensor.h"
 

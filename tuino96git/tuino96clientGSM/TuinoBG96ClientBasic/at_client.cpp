@@ -5,9 +5,9 @@
  * @reworker htemizel
  * @licence MIT licence
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company: https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include <Arduino.h>
 #include "at_client.h"
@@ -43,7 +43,7 @@ char _serial_read()
   char c;
   
   c = ATSerial->read();
- //  SerialUSB.print(c);
+//  SerialUSB.print(c);
   return c;
 }
 
@@ -57,15 +57,14 @@ void _serial_print(const char *string)
 {
   int i;
   int len = strlen(string);
-
- SerialUSB.print("Sending ->");
+ 
   for (i=0;i<len;i++)
   {
     _serial_write(string[i]);
     delay(1);
-    SerialUSB.write(string[i]);
+//  SerialUSB.write(string[i]);
   }
-SerialUSB.println("<-");
+
 }
 
 void at_serial_clear_buffers()
@@ -90,7 +89,11 @@ void at_send_command(char *command )
   
   at_serial_clear_buffers();
   sprintf(cmd,"%s%s",command,AT_COMMAND_CR);  
+//  Serial.println("(ARM Cortex)  ---UART--->  (BG96)");
+//  Serial.println("");
   _serial_print(cmd);
+//  Serial.println("");
+//  Serial.println("");
 
 }
 
@@ -109,6 +112,8 @@ Serial.println(response_string);
 Serial.println(response_length);
 Serial.println("Read For Response ->");
   */
+//  Serial.println("(ARM Cortex)  <---UART---  (BG96)");
+//  Serial.println("");
   // Loop until the timeout is reached.
   while (millis() < (start_time + timeout_ms)) 
   {
@@ -117,7 +122,7 @@ Serial.println("Read For Response ->");
     {
       c = _serial_read();
 
-      Serial.print(c);
+//      Serial.print(c);
       
       // If the character matches the expected character in the response,
       // increment the pointer.  If not, reset things.
@@ -127,7 +132,9 @@ Serial.println("Read For Response ->");
         matched_chars++;
        if (matched_chars == response_length) 
         {
-          Serial.println("<- SUCCESS");
+          //Serial.println("<- SUCCESS");
+//          Serial.println("");
+//          Serial.println("");
           return AT_COMMAND_SUCCESS;
         }
       } 
@@ -140,9 +147,11 @@ Serial.println("Read For Response ->");
   }
 
   // Timeout reached with no match found.
-  Serial.println("<- TIMEOUT");
+  Serial.print("TIMEOUT");
   return AT_COMMAND_TIMEOUT;  
 }
+
+
 
 // Same as above, but with two sets of counters/indexes/etc.
 uint8_t read_for_responses_dual(char* pass_string, char* fail_string, uint32_t timeout_ms) 
@@ -158,7 +167,7 @@ Serial.println(fail_string);
 Serial.println(fail_response_length);
 Serial.println("Read For Response Dual ->");
 */
-
+//  Serial.println("(ARM Cortex)  <---UART---  (BG96)");
   // Loop until the timout is reached.
   while (millis() < (start_time + timeout_ms)) 
   {
@@ -166,7 +175,7 @@ Serial.println("Read For Response Dual ->");
     {
       char next_character = _serial_read();
 
-      Serial.print(next_character);
+//      Serial.print(next_character);
 
       // Check and update the "pass" case.
       if (next_character == pass_string[pass_matched_chars]) 
@@ -175,7 +184,9 @@ Serial.println("Read For Response Dual ->");
         
         if (pass_matched_chars == pass_response_length) 
         {
-          Serial.println("<- SUCCESS");
+          //Serial.println("<- SUCCESS");
+//          Serial.println("");
+//          Serial.println("");
           return AT_COMMAND_SUCCESS;
         }
       } 
@@ -191,7 +202,8 @@ Serial.println("Read For Response Dual ->");
         
         if (fail_matched_characters == fail_response_length) 
         {
-          Serial.println("<- FAILURE");
+          Serial.println("FAILURE");
+          Serial.println("");
           return AT_COMMAND_FAILURE;
         }
       } 
@@ -202,7 +214,7 @@ Serial.println("Read For Response Dual ->");
     }
   }
 
-  Serial.println("<- TIMEOUT");
+  Serial.println("TIMEOUT");
   // Timeout reached - return timeout.
   return AT_COMMAND_TIMEOUT;  
 }
@@ -218,7 +230,7 @@ uint8_t at_read_dual_and_copy_to_buffer(char *buffer, char* pass_string, char* f
   uint8_t fail_response_length = strlen(fail_string);
 
   //Serial.println("Received with at_read_dual_and_copy_to_buffer: ");
-  
+//  Serial.print("(ARM Cortex)  <---UART---  (BG96)");
   // Loop until timeout.
   while (millis() < (start_time + timeout_ms)) {
     if (_serial_available()) 
@@ -247,6 +259,8 @@ uint8_t at_read_dual_and_copy_to_buffer(char *buffer, char* pass_string, char* f
           for(int i=0;i<pass_response_length;i++){
             buffer[bytes_read-i] = 0;
           }
+//          Serial.println("");
+//          Serial.println("");
           return AT_COMMAND_SUCCESS;
         }
       } 
@@ -265,6 +279,7 @@ uint8_t at_read_dual_and_copy_to_buffer(char *buffer, char* pass_string, char* f
           for(int i=0;i<fail_response_length;i++){
             buffer[bytes_read-i] = 0;
           }
+          Serial.println("");
           return AT_COMMAND_FAILURE;
         }
       } 
@@ -286,14 +301,14 @@ uint8_t at_copy_serial_to_buffer(char *buffer, char read_until, uint16_t max_byt
 
   unsigned long start_time = millis();
   uint16_t bytes_read = 0;
-//Serial.println( "COPY->");
-
+  //Serial.println( "COPY->");
+//  Serial.print("(ARM Cortex)  <---UART---  (BG96)");
   // Loop until timeout.
   while (millis() < (start_time + timeout_ms)) {
     if (_serial_available()) {
       buffer[bytes_read] = _serial_read();
 
-//Serial.println( buffer );
+      //Serial.println( buffer );
 
       /**
        * Check to see if the character just read matches the read_until
@@ -303,6 +318,8 @@ uint8_t at_copy_serial_to_buffer(char *buffer, char read_until, uint16_t max_byt
       if (buffer[bytes_read] == read_until) {
         buffer[bytes_read] = 0;
 //        Serial.println( "<- SUCCESS");
+//        Serial.println("");
+//        Serial.println("");
         return AT_COMMAND_SUCCESS;
       }
 
@@ -320,6 +337,7 @@ uint8_t at_copy_serial_to_buffer(char *buffer, char read_until, uint16_t max_byt
 
       if (bytes_read >= (max_bytes - 1)) {
         buffer[bytes_read] = 0;
+        Serial.println("");
         return AT_COMMAND_LENGTH_EXCEEDED;
       }
     }
@@ -336,7 +354,6 @@ uint8_t at_copy_serial_to_buffer(char *buffer, char read_until, uint16_t max_byt
 uint8_t at_read_until(char read_until, uint16_t timeout_ms) 
 {
   unsigned long start_time = millis();
-
   while (millis() < (start_time + timeout_ms)) 
   {
     if (_serial_available()) 
@@ -348,7 +365,7 @@ uint8_t at_read_until(char read_until, uint16_t timeout_ms)
       }
     }
   }
-
+  Serial.println("");
   return AT_COMMAND_TIMEOUT;  
 }
 
@@ -361,13 +378,14 @@ uint8_t at_read_IMSI_and_copy_to_buffer(char *buffer,char* pass_string, char* fa
   uint8_t pass_response_length = strlen(pass_string);
   uint8_t fail_response_length = strlen(fail_string);
 
+//   Serial.print("(ARM Cortex)  <---UART---  (BG96)");
 
   // Loop until timeout.
   while (millis() < (start_time + timeout_ms)) {
     if (_serial_available()) 
     {
 
-       char next_character = _serial_read();
+      char next_character = _serial_read();
        
       buffer[bytes_read] = next_character;
       bytes_read++;
@@ -388,6 +406,9 @@ uint8_t at_read_IMSI_and_copy_to_buffer(char *buffer,char* pass_string, char* fa
         
         if (pass_matched_chars == pass_response_length) 
         {
+//          Serial.println("");
+//          Serial.println("");
+//          Serial.println(buffer);
           buffer[bytes_read] = 0;
           return AT_COMMAND_SUCCESS;
         }
@@ -408,6 +429,7 @@ uint8_t at_read_IMSI_and_copy_to_buffer(char *buffer,char* pass_string, char* fa
         if (fail_matched_characters == fail_response_length) 
         {
           buffer[bytes_read] = 0;
+          Serial.println("");
           return AT_COMMAND_FAILURE;
         }
       } 
@@ -420,5 +442,6 @@ uint8_t at_read_IMSI_and_copy_to_buffer(char *buffer,char* pass_string, char* fa
   }
 
   // Timeout reached - return timeout.
+  Serial.println("");
   return AT_COMMAND_TIMEOUT;  
 }

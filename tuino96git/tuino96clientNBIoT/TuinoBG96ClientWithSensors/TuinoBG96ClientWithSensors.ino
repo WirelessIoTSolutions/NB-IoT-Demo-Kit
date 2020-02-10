@@ -1,23 +1,22 @@
 /**
  * @file TuinoBG96ClientWithSensors.ino
  * @description Example Client on how to use the Relay-Service 
- *              based on NBIoT with the Tuino96(with example Sensors)
+ *              based on NBIoT with the Tuino96
  * @author htemizel
  * ATTENTION: Need a subscription to Nb-IoT relay service and client library on IoT device to work
- * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
+ * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
  * 
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company: https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
-#include <ArduinoJson.h>
+#include <ArduinoJson.h> //Use stable Version 5
 #include "Wire.h"
 
 #include "tuino096.h"
 #include "bg96.h"
 #include "VSNBPClient.h"
-#include "CommandsManager.h"
 
 #include "Ultrasonic.h"
 #include "rotaryAngleSensor.h"
@@ -43,8 +42,8 @@
 //#define NBIOT_BAND      BG96_LTE_BAND_B20
 
 /* ENDPOINT WHERE YOU WANT TO SEND DATA */
-#define UDP_IP_ADDRESS  <"...">
-#define UDP_PORT        <Port>
+#define UDP_IP_ADDRESS  "XXX.XXX.XXX.XXX"
+#define UDP_PORT         XXXXX
 
 //the instances of the sensor classes
 //analog PINS: A0, A1, A2...
@@ -63,24 +62,22 @@ void setup() {
   //setup I2C
   Wire.begin();
   Serial.begin(9600);
+
   //configure the OLED display(I2C)
   oled.setupOLED();
   //configure temp&humi sensor(I2C)
   dht.begin();
-
-
+  
   //init function for the BG96 MODULE
   int ret = BG96_init();
   if ( ret ==  BG96_OK ){
-    Serial.println("BG96_init() OK!");
+    Serial.println("DEBUG - BG96 MODEM Initialization Success!\n");
     oled.printOLED("BG96 init OK!", 0, 0);
   }else if ( ret ==  BG96_KO ){
-    Serial.println("Error while initializing BG96 Modem!");
+    Serial.println("DEBUG - Error while initializing BG96 Modem!\n");
     oled.printOLED("BG96 init Fail", 0, 0);
     abort();
   }
-  
-  delay(600);
 
   //the SIM cards IMSI inside the device
   char IMSI[32] = {'\0'};
@@ -88,60 +85,50 @@ void setup() {
   ret = BG96_getIMSI(IMSI,sizeof(IMSI));
   relayServiceClient.setIMSI(IMSI);
   if (ret == BG96_OK){
-    Serial.println("BG96_getIMSI OK : " + String(IMSI));
+    Serial.print("DEBUG - IMSI Read Correctly! -> ");
+    Serial.print(IMSI);Serial.println("\n");
     oled.printOLED("BG96 IMSI OK!", 1, 0);
   }else if (ret == BG96_KO){
-    Serial.println("Could not read IMSI. SIM Card inserted?");
+    Serial.println("DEBUG - Could not read IMSI. SIM Card inserted?\n");
     oled.printOLED("BG96 IMSI Fail", 1, 0);
     abort();
   }
 
-  delay(600);
-
   //function to set the necessary NBIoT parameters
   ret = BG96_setNBIoTConfigs(OPERATOR_APN, NBIOT_BAND);
   if (ret == BG96_OK){
-    Serial.println("BG96_setNBIoTConfigs() OK!");
+    Serial.println("DEBUG - NB-IoT Config Set!\n");
     oled.printOLED("NBIoT set OK!", 2, 0);
   }else if (ret == BG96_KO){
-    Serial.println("Could not set NBIoT configurations, check the freq. Band and APN link!");
+    Serial.println("DEBUG - Could not set NBIoT configurations, check the freq. Band and APN link!\n");
     oled.printOLED("NBIoT set Fail", 2, 0);
     abort();
   }
-  
-  delay(600);
 
   //function to enable the BG96's GPS functionality
   ret = BG96_gpsOn();
   if (ret == BG96_OK){
-    Serial.println("BG96_gpsOn() OK!");
+    Serial.println("DEBUG - GPS Config Set!");
     oled.printOLED("BG96 GPS OK!", 3, 0);
   }else if (ret == BG96_KO){
-    Serial.println("Could not activate GPS Module!");
+    Serial.println("ERROR - Could not activate GPS Module!");
     oled.printOLED("BG96 GPS Fail", 3, 0);
     abort();
   }
   
-  delay(600);
-
   //function to enable NMEA to periodically read GPS data
   ret = BG96_enableNMEA();
   if (ret == BG96_OK){
-    Serial.println("BG96_enableNMEA() OK!");
+    Serial.println("NMEA-Format for GPS set!");
     oled.printOLED("BG96 NMEA OK!", 4, 0);
   }else if (ret == BG96_KO){
     Serial.println("Could not enable NMEA for the GPS Module!");
     oled.printOLED("BG96 NMEA Fail", 4, 0);
     abort();
   }
-  
-  delay(1800);
-  
+
   oled.printMM1Logo();
 }
-
-//commandsManager class instance for analizing the backchannelpayload
-CommandsManager commandsManager(oled, led1);
 
 //the buffer that will be filled and send to the Relay-Service
 char sensorDataBuf[BUFLEN] = {'\0'};
@@ -150,11 +137,15 @@ char sensorDataBuf[BUFLEN] = {'\0'};
 StaticJsonBuffer<300> jsonBuffer;
 JsonObject& root = jsonBuffer.createObject();
 
-void loop() {
+//intervall of the loop in ms
+int loopIntervall = 30000;
 
+void loop() {
+  
   //checking the NBIoT connection and UDP Socket to make a reconnection/reopen attempt if needed
   BG96_checkNBIoTConnectionProperties(OPERATOR_CODE, UDP_IP_ADDRESS, UDP_PORT);
- 
+
+  //__________Reading_Sensor_data___________
   //aquiring sensor data(Humidity) and printing it to the oled display
   float humidity = dht.readHumidity();
   //aquiring sensor data(Centimeters) and printing it to the oled display
@@ -166,7 +157,7 @@ void loop() {
   //aquiring sensor data(lux) and printing it to the oled display
   float lux = li1.getLightAmountiinLux();
 
-  //print alle the data to the oled screen
+  //_______Printing_Sensor_data_to_OLED_______
   oled.clearDisplay();
   printSensordata("Humid", 0, humidity);
   printSensordata("Temp", 1, temperature);
@@ -247,16 +238,14 @@ void loop() {
   else
     oled.printOLED(" FAIL", 7, 10);
 
-  delay(1000);
-  
-  //creating jsonbuffer for json array that contains the users payload for the nbiot device
-  StaticJsonBuffer<800> jsonBuffer2;
-  JsonArray& array = jsonBuffer2.parseArray(relayServiceClient.GetBackchannelPayload());
-  commandsManager.handleBackchannelCommands(array);
-
-  //getting the delay for the main loop from relay-service 
-  delay(commandsManager.getRemoteLoopInterval());
+  //relayServiceClient.ContainsBackchannelPayload("Test");
+   
+  //delay for the main loop
+  Serial.println("Main Loop End, starting again in " + String(loopIntervall/1000) + " seconds.\n");
+  delay(loopIntervall);
 }
+
+
 
 //functions to make the oled print for the sensordata shorter(actually not needed, just for convenience)
 void printSensordata(String dataName, int line, float value){

@@ -4,12 +4,12 @@
  *              based on NBIoT with the Tuino96
  * @author htemizel
  * ATTENTION: Need a subscription to Nb-IoT relay service and client library on IoT device to work
- * @copyright (C) 2019 mm1 Technology GmbH - all rights reserved.
+ * @copyright (C) 2019 WIOTS GmbH - all rights reserved.
  * 
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company:     https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include "tuino096.h"
 #include "bg96.h"
@@ -33,8 +33,8 @@
 //#define NBIOT_BAND      BG96_LTE_BAND_B20
 
 /* ENDPOINT WHERE YOU WANT TO SEND DATA */
-#define UDP_IP_ADDRESS  <"...">
-#define UDP_PORT        <Port>
+#define UDP_IP_ADDRESS  "XXX.XXX.XXX.XXX"
+#define UDP_PORT         XXXXX
 
 //client class instance for relay-service communication
 VSNBPClient relayServiceClient;
@@ -47,9 +47,9 @@ void setup() {
   //init function for the BG96 MODULE
   int ret = BG96_init();
   if ( ret ==  BG96_OK )
-    Serial.println("BG96_init() OK!");
+    Serial.println("DEBUG - BG96 MODEM Initialization Success!\n");
   else if ( ret ==  BG96_KO ){
-    Serial.println("Error while initializing BG96 Modem!");
+    Serial.println("DEBUG - Error while initializing BG96 Modem!\n");
     abort();
   }
 
@@ -58,19 +58,20 @@ void setup() {
   //procedure to get the SIM Cards IMSI 
   ret = BG96_getIMSI(IMSI,sizeof(IMSI));
   relayServiceClient.setIMSI(IMSI);
-  if (ret == BG96_OK)
-    Serial.println("BG96_getIMSI OK : " + String(IMSI));
-  else if (ret == BG96_KO){
-    Serial.println("Could not read IMSI. SIM Card inserted?");
+  if (ret == BG96_OK){
+    Serial.print("DEBUG - IMSI Read Correctly! -> ");
+    Serial.print(IMSI);Serial.println("\n");
+  }else if (ret == BG96_KO){
+    Serial.println("DEBUG - Could not read IMSI. SIM Card inserted?\n");
     abort();
   }
 
   //function to set the necessary NBIoT parameters
   ret = BG96_setNBIoTConfigs(OPERATOR_APN, NBIOT_BAND);
   if (ret == BG96_OK)
-    Serial.println("BG96_setNBIoTConfigs() OK!");
+    Serial.println("DEBUG - NB-IoT Config Set!\n");
   else if (ret == BG96_KO){
-    Serial.println("Could not set NBIoT configurations, check the freq. Band and APN link!");
+    Serial.println("DEBUG - Could not set NBIoT configurations, check the freq. Band and APN link!\n");
     abort();
   }
 }
@@ -101,6 +102,10 @@ void loop() {
    * relayServiceClient.ContainsBackchannelPayload("test") - function
    * 
    ***********************************************/
+
+   relayServiceClient.ContainsBackchannelPayload("Test");
+   
   //delay for the main loop
+  Serial.println("Main Loop End, starting again in " + String(loopIntervall/1000) + " seconds.\n");
   delay(loopIntervall);
 }

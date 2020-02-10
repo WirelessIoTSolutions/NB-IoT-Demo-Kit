@@ -5,9 +5,9 @@
  * @reworker htemizel
  * @licence MIT licence
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company: https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include "tuino096.h"
 #include "at_client.h"
@@ -101,7 +101,8 @@ uint8_t BG96_init()
       return BG96_KO;
     }
 
-    _log("BG96 Boot OK !!!");
+    Serial.println("__________INITIALIZATION_________\n");
+    _log("DEBUG - BG96 Modem Booting Success!\n");
 
     at_send_command("ATE0");
 
@@ -110,7 +111,7 @@ uint8_t BG96_init()
       return BG96_KO;
     }
 
-    _log("BG96 AT OK !!!");
+    _log("DEBUG - BG96 Modem AT Echo Off!\n");
 
      // Delay for SIM reading
      delay(2000);
@@ -147,11 +148,12 @@ uint8_t BG96_getIMSI(char *data, uint8_t max_size)
 
 void BG96_checkGSMConnectionProperties(char *operator_code, char *ip, uint16_t port)
 { 
+  Serial.println("_______________CONNECTION_STATUS____________\n");
   int retries = 0;
   while(BG96_deviceIsConnected(operator_code) != 0){
     BG96_setOperator(operator_code);
     if(retries > 7)
-      Serial.println("Please check SIM Card and restart the Application!");
+      Serial.println("Please check SIM Card and restart the Application!\n");
     retries++;
   }
   if(BG96_isSocketOpen(ip,port) != 0){
@@ -163,14 +165,15 @@ void BG96_checkGSMConnectionProperties(char *operator_code, char *ip, uint16_t p
 
 void BG96_checkNBIoTConnectionProperties(char *operator_code, char *ip, uint16_t port)
 {  
+  Serial.println("_______________CONNECTION_STATUS____________\n");
   int retries = 0;
-  while(BG96_deviceIsConnected(operator_code) != 0 || BG96_checkNBIoTFallback(operator_code) == 0){
+  while(BG96_deviceIsConnected(operator_code) != 0 || BG96_checkNBIoTFallback(operator_code) == 0){ //
     BG96_setOperator(operator_code);
     if(retries > 7)
-      Serial.println("Please check SIM Card and restart the Application!");
+      Serial.println("Please check SIM Card and restart the Application!\n");
     retries++;
   }
-  if(BG96_isSocketOpen(ip,port) != 0){
+  if(BG96_isSocketOpen(ip,port) != 0){ //
     BG96_SocketClose();
     BG96_SocketOpen(ip,port);
   }
@@ -179,17 +182,17 @@ void BG96_checkNBIoTConnectionProperties(char *operator_code, char *ip, uint16_t
 
 uint8_t BG96_deviceIsConnected(char *operator_code)
 {
-
   char tmp_string[128];
   sprintf(tmp_string,"1,2,\"%s\"",operator_code);
-  
   at_send_command("AT+COPS?");
-  
-  if ( at_read_for_response_single(tmp_string,BG96_BOOT_TIMEOUT) == 0 )
+  if ( at_read_for_response_single(tmp_string,4500) != 0 )
   {
-    return BG96_OK;
+    Serial.println(" -> Device currently not registered to network operator\n");
+    return BG96_KO;
   }
-  return BG96_KO;
+  Serial.print("Device currently registered to network operator with OP-Code:"); Serial.println(operator_code);
+  Serial.println("");
+  return BG96_OK;
 }
 
 uint8_t BG96_checkNBIoTFallback(char *operator_code)
@@ -199,7 +202,7 @@ uint8_t BG96_checkNBIoTFallback(char *operator_code)
   sprintf(tmp_string,"\"CAT-NB1\",\"%s\"",operator_code);
   
   at_send_command("AT+QNWINFO");
-  
+
   if ( at_read_for_response_single(tmp_string,BG96_BOOT_TIMEOUT) == 0 )
   {
     return BG96_KO;
@@ -209,7 +212,7 @@ uint8_t BG96_checkNBIoTFallback(char *operator_code)
   sprintf(tmp_string2,"\"EDGE\",\"%s\"",operator_code);
   
   at_send_command("AT+QNWINFO");
-  
+
   if ( at_read_for_response_single(tmp_string2,BG96_BOOT_TIMEOUT) == 0 )
   {
     return BG96_OK;
@@ -367,9 +370,13 @@ uint8_t BG96_setOperator(char *operator_code)
   sprintf(tmp_string,"AT+COPS=1,2,\"%s\"",operator_code);
 
   at_send_command(tmp_string);
-  if ( read_for_responses_dual("OK","ERROR",BG96_LONG_TIMEOUT) != 0 )
+  if ( read_for_responses_dual("OK","ERROR",BG96_LONG_TIMEOUT) != 0 ){
+    Serial.print("Could not attach to Operator with OP-Code: "); Serial.println(operator_code);
+    Serial.println("");
     return  BG96_KO;
- 
+  }
+  Serial.print("Successfully attached to selected Operator with OP-Code: ");Serial.println(operator_code);
+  Serial.println("");
   return BG96_OK;
 }
 
@@ -461,9 +468,11 @@ uint8_t BG96_SocketOpen(char *ip, uint16_t port)
   
   at_send_command(tmp_string);
 
-  if ( at_read_for_response_single("+QIOPEN: 0,0",10000) != 0 )
+  if ( at_read_for_response_single("+QIOPEN: 0,0",10000) != 0 ){
         return  BG96_KO;   
- 
+  }
+  Serial.print("DEBUG - Opening UDP Socket Nr.0 for IP: "); Serial.print(ip); Serial.print(", Port: "); Serial.println(port);
+  Serial.println("");
   return BG96_OK;
 }
 
@@ -474,9 +483,12 @@ uint8_t BG96_isSocketOpen(char *ip, uint16_t port)
 
   at_send_command("AT+QISTATE?");
 
-  if ( at_read_for_response_single(tmp_string,10000) == 0 )
+  if ( at_read_for_response_single(tmp_string,3000) == 0 ){
+        Serial.print("DEBUG - UDP Socket Nr.0 Open for IP: "); Serial.print(ip); Serial.print(" and Port: "); Serial.println(port);
+        Serial.println("");
         return  BG96_OK;   
- 
+  }
+  Serial.println(" -> No Socket Currently Opened\n");
   return BG96_KO;
 }
 
@@ -552,11 +564,11 @@ uint8_t BG96_getCoordinates(char *latitute, char *longitute)
   at_send_command("AT+QGPSGNMEA=\"RMC\"");
   
   if ( at_read_dual_and_copy_to_buffer(temp,"*","GPRMC,,V,,", 128,  BG96_DEFAULT_TIMEOUT) != AT_COMMAND_SUCCESS ){
-    Serial.println("UART: No Coordinates available yet!");
+    Serial.println("UART: No Coordinates available yet!\n");
     return BG96_KO;
   } 
 
-  Serial.println("UART: GPS Coordinates available!");
+  Serial.println("UART: GPS Coordinates available!\n");
   /*
   Serial.println("temp:");
   Serial.println("+++++++++++++++++++++++++++++++++++++");
@@ -615,6 +627,47 @@ uint8_t BG96_getCoordinates(char *latitute, char *longitute)
   return BG96_OK;
 }
 
+uint8_t BG96_QCSQ(int *rsrp)
+{
+  char str[60] = { '\0' };
+  int init_size = strlen(str);
+  char *strCAT = "CAT-NB1";
+  char delim[] = " ";
+  char *ptr;
+  
+  at_send_command("AT+QCSQ");
+
+  memset(str,0,sizeof(str));
+  if ( at_read_dual_and_copy_to_buffer(str,"OK","ERROR", 128,  BG96_DEFAULT_TIMEOUT) != AT_COMMAND_SUCCESS ){
+    return BG96_KO;
+  } 
+
+  ptr = strstr(str, strCAT);
+  if(ptr != NULL){
+    while(*ptr != ','){
+      ptr++;
+    }
+    ptr++;
+    while(*ptr != ','){
+      ptr++;
+    }
+    ptr++;
+    int i = 0;
+    char recvBytes[4] = {'\0'};
+    char c = ',';
+    while(*ptr != c){
+      recvBytes[i] = *ptr;
+      i++;
+      ptr++;
+    }
+
+    *rsrp = atoi(recvBytes);
+    return BG96_OK;
+  }
+  
+  return BG96_KO;
+}
+
 uint8_t BG96_RXData(char *data, uint8_t max_size)
 {
   char temp[max_size];
@@ -627,13 +680,12 @@ uint8_t BG96_RXData(char *data, uint8_t max_size)
     Serial.println("UART Error at RXData");
     return BG96_KO;
   }
-
-  Serial.print("UART Payload Received: ");
-  Serial.println(temp);
+  
+//  Serial.println(temp);
   
   char *pch = strstr (temp,"+QIRD:");
   pch = pch + 7;
-
+  
   int i = 0;
   char recvBytes[4] = {'\0'};
   char c = '\r';
@@ -644,8 +696,9 @@ uint8_t BG96_RXData(char *data, uint8_t max_size)
   }
 
   int recvSize = atoi(recvBytes);
-  Serial.print("\nRX Payload size over UART: ");
-  Serial.println(recvSize);
+  Serial.print("\nDEBUG - Payload Received over UART from SOCKET: ");
+  Serial.print(recvSize);
+  Serial.println(" Bytes\n");
 
   pch += 2;
 
@@ -676,7 +729,7 @@ uint8_t BG96_RXData(char *data, uint8_t max_size)
   int analyse2 = data[1];
   
   if(analyse == 0 && analyse2 == 0){
-    Serial.println("Nothing received over UART at RXData");
+    Serial.println("ERROR - Nothing received over UART at RXData");
     return BG96_KO;
   }else{
     return BG96_OK;
@@ -690,12 +743,11 @@ uint8_t BG96_TXData(char *data, int data_len)
    at_send_command(tx_string);
    
    if ( at_read_for_response_single(">",BG96_DEFAULT_TIMEOUT) != 0 ){
-    Serial.print("UART Error at TXData");
+    Serial.print("ERROR - Transfer Data via UART \n");
     return  BG96_KO; 
    }
- 
-  _log("Sending Data to Socket");
 
+  
   for (int i=0; i<data_len; i++) 
   {
     at_send_char(data[i]);
@@ -703,10 +755,11 @@ uint8_t BG96_TXData(char *data, int data_len)
   }
   
   if ( read_for_responses_dual("SEND OK","SEND FAIL",BG96_DEFAULT_TIMEOUT) != 0 ){
-    Serial.print("UART Error at TXData");
+    Serial.print("ERROR - Transfer Data via UART \n");
     return  BG96_KO;
   }else{
-    Serial.print("UART TXData Send!\n");
+    Serial.print("DEBUG - Transfer Data via UART to SOCKET: ");Serial.print(data_len);
+    Serial.print(" Bytes\n");
     return BG96_OK;
   }
 }

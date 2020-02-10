@@ -5,9 +5,9 @@
  * @reworker htemizel
  * @licence MIT licence
  *
- * Find out more about mm1 Technology:
- * Company: http://mm1-technology.de/
- * GitHub:  https://github.com/mm1technology/
+ * Find out more about WIOTS:
+ * Company: https://wireless-iot-solutions.com/wp/
+ * GitHub:  https://github.com/WirelessIoTSolutions/
  */
 #include "Wire.h"
 #include "SeeedOLED.h"
@@ -511,151 +511,151 @@ void SeeedOLED::printMM1Logo()
 
   printOLED("   \\", 0, 0);
   printOLED("   /", 1, 0);
-  printOLED(" OO\\", 2, 0);
+  printOLED(" O \\", 2, 0);
   printOLED(" O /", 3, 0);
   printOLED(" O \\", 4, 0);
-  printOLED(" O /", 5, 0);
+  printOLED(" OO/", 5, 0);
   printOLED("   \\", 6, 0);
   printOLED("   /", 7, 0);
   delay(100);
 
   printOLED("    /", 0, 0);
   printOLED("    \\", 1, 0);
-  printOLED(" OOO/", 2, 0);
+  printOLED(" O O/", 2, 0);
   printOLED(" O O\\", 3, 0);
   printOLED(" O O/", 4, 0);
-  printOLED(" O O\\", 5, 0);
+  printOLED(" OOO\\", 5, 0);
   printOLED("    /", 6, 0);
   printOLED("    \\", 7, 0);
   delay(100);
 
   printOLED("     \\", 0, 0);
   printOLED("     /", 1, 0);
-  printOLED(" OOOO\\", 2, 0);
+  printOLED(" O O \\", 2, 0);
   printOLED(" O O /", 3, 0);
   printOLED(" O O \\", 4, 0);
-  printOLED(" O O /", 5, 0);
+  printOLED(" OOOO/", 5, 0);
   printOLED("     \\", 6, 0);
   printOLED("     /", 7, 0);
   delay(100);
 
   printOLED("     /", 0, 0);
   printOLED("     \\", 1, 0);
-  printOLED(" OOOO/", 2, 0);
+  printOLED(" O O /", 2, 0);
   printOLED(" O O \\", 3, 0);
   printOLED(" O O /", 4, 0);
-  printOLED(" O O \\", 5, 0);
+  printOLED(" OOOO\\", 5, 0);
   printOLED("     /", 6, 0);
   printOLED("     \\", 7, 0);
   delay(100);
 
   printOLED("      \\", 0, 0);
   printOLED("      /", 1, 0);
-  printOLED(" OOOOO\\", 2, 0);
+  printOLED(" O O O\\", 2, 0);
   printOLED(" O O O/", 3, 0);
   printOLED(" O O O\\", 4, 0);
-  printOLED(" O O O/", 5, 0);
+  printOLED(" OOOOO/", 5, 0);
   printOLED("      \\", 6, 0);
   printOLED("      /", 7, 0);
   delay(100);
 
   printOLED("       /", 0, 0);
   printOLED("       \\", 1, 0);
-  printOLED(" OOOOO /", 2, 0);
+  printOLED(" O O O /", 2, 0);
   printOLED(" O O O \\", 3, 0);
   printOLED(" O O O /", 4, 0);
-  printOLED(" O O O \\", 5, 0);
+  printOLED(" OOOOO \\", 5, 0);
   printOLED("       /", 6, 0);
   printOLED("       \\", 7, 0);
   delay(100);
 
   printOLED("        \\", 0, 0);
   printOLED("        /", 1, 0);
-  printOLED(" OOOOO O\\", 2, 0);
-  printOLED(" O O O O/", 3, 0);
-  printOLED(" O O O O\\", 4, 0);
-  printOLED(" O O O O/", 5, 0);
+  printOLED(" O O O  \\", 2, 0);
+  printOLED(" O O O  /", 3, 0);
+  printOLED(" O O O  \\", 4, 0);
+  printOLED(" OOOOO  /", 5, 0);
   printOLED("        \\", 6, 0);
   printOLED("        /", 7, 0);
   delay(100);
 
   printOLED("         /", 0, 0);
   printOLED("         \\", 1, 0);
-  printOLED(" OOOOO OO/", 2, 0);
-  printOLED(" O O O O \\", 3, 0);
-  printOLED(" O O O O /", 4, 0);
-  printOLED(" O O O O \\", 5, 0);
+  printOLED(" O O O   /", 2, 0);
+  printOLED(" O O O   \\", 3, 0);
+  printOLED(" O O O   /", 4, 0);
+  printOLED(" OOOOO   \\", 5, 0);
   printOLED("         /", 6, 0);
   printOLED("         \\", 7, 0);
   delay(100);
 
   printOLED("          \\", 0, 0);
   printOLED("          /", 1, 0);
-  printOLED(" OOOOO OOO\\", 2, 0);
-  printOLED(" O O O O O/", 3, 0);
-  printOLED(" O O O O O\\", 4, 0);
-  printOLED(" O O O O O/", 5, 0);
+  printOLED(" O O O   O\\", 2, 0);
+  printOLED(" O O O   O/", 3, 0);
+  printOLED(" O O O   O\\", 4, 0);
+  printOLED(" OOOOO   O/", 5, 0);
   printOLED("          \\", 6, 0);
   printOLED("          /", 7, 0);
   delay(100);
 
   printOLED("           /", 0, 0);
   printOLED("           \\", 1, 0);
-  printOLED(" OOOOO OOOO/", 2, 0);
-  printOLED(" O O O O O \\", 3, 0);
-  printOLED(" O O O O O /", 4, 0);
-  printOLED(" O O O O O \\", 5, 0);
+  printOLED(" O O O   O /", 2, 0);
+  printOLED(" O O O   O \\", 3, 0);
+  printOLED(" O O O   O /", 4, 0);
+  printOLED(" OOOOO   O \\", 5, 0);
   printOLED("           /", 6, 0);
   printOLED("           \\", 7, 0);
   delay(100);
 
   printOLED("            \\", 0, 0);
   printOLED("            /", 1, 0);
-  printOLED(" OOOOO OOOOO\\", 2, 0);
-  printOLED(" O O O O O O/", 3, 0);
-  printOLED(" O O O O O O\\", 4, 0);
-  printOLED(" O O O O O O/", 5, 0);
+  printOLED(" O O O   O  \\", 2, 0);
+  printOLED(" O O O   O  /", 3, 0);
+  printOLED(" O O O   O  \\", 4, 0);
+  printOLED(" OOOOO   O  /", 5, 0);
   printOLED("            \\", 6, 0);
   printOLED("            /", 7, 0);
   delay(100);
 
   printOLED("             /", 0, 0);
   printOLED("             \\", 1, 0);
-  printOLED(" OOOOO OOOOO /", 2, 0);
-  printOLED(" O O O O O O \\", 3, 0);
-  printOLED(" O O O O O O /", 4, 0);
-  printOLED(" O O O O O O \\", 5, 0);
+  printOLED(" O O O   O   /", 2, 0);
+  printOLED(" O O O   O   \\", 3, 0);
+  printOLED(" O O O   O   /", 4, 0);
+  printOLED(" OOOOO   O   \\", 5, 0);
   printOLED("             /", 6, 0);
   printOLED("             \\", 7, 0);
   delay(100);
 
   printOLED("              \\", 0, 0);
   printOLED("              /", 1, 0);
-  printOLED(" OOOOO OOOOO O\\", 2, 0);
-  printOLED(" O O O O O O  /", 3, 0);
-  printOLED(" O O O O O O  \\", 4, 0);
-  printOLED(" O O O O O O  /", 5, 0);
+  printOLED(" O O O   O   O\\", 2, 0);
+  printOLED(" O O O   O    /", 3, 0);
+  printOLED(" O O O   O    \\", 4, 0);
+  printOLED(" OOOOO   O    /", 5, 0);
   printOLED("              \\", 6, 0);
   printOLED("              /", 7, 0);
   delay(100);
 
   printOLED("               /", 0, 0);
   printOLED("               \\", 1, 0);
-  printOLED(" OOOOO OOOOO OO/", 2, 0);
-  printOLED(" O O O O O O  O\\", 3, 0);
-  printOLED(" O O O O O O  O/", 4, 0);
-  printOLED(" O O O O O O  O\\", 5, 0);
+  printOLED(" O O O   O   OO/", 2, 0);
+  printOLED(" O O O   O    O\\", 3, 0);
+  printOLED(" O O O   O    O/", 4, 0);
+  printOLED(" OOOOO   O    O\\", 5, 0);
   printOLED("               /", 6, 0);
   printOLED("               \\", 7, 0);
   delay(100);
   
   printOLED("                ", 0, 0);
   printOLED("                ", 1, 0);
-  printOLED(" OOOOO OOOOO OO ", 2, 0);
-  printOLED(" O O O O O O  O ", 3, 0);
-  printOLED(" O O O O O O  O ", 4, 0);
-  printOLED(" O O O O O O  O ", 5, 0);
-  printOLED("                ", 6, 0);
+  printOLED(" O O O   O  OOOO", 2, 0);
+  printOLED(" O O O   O  O   ", 3, 0);
+  printOLED(" O O O   O  OOOO", 4, 0);
+  printOLED(" O O O   O     O", 5, 0);
+  printOLED(" OOOOO   O  OOOO", 6, 0);
   printOLED("                ", 7, 0);
   delay(100);
 }
