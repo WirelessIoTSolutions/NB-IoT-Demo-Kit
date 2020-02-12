@@ -85,7 +85,7 @@ void drawBitmap(unsigned char *bitmaparray,int bytes);
 void setHorizontalScrollProperties(bool direction,unsigned char startPage, unsigned char endPage, unsigned char scrollSpeed);
 void activateScroll();
 void deactivateScroll();
-void printMM1Logo();
+void printWISLogo();
 };
 
 #endif

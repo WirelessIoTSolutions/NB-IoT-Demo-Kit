@@ -127,7 +127,7 @@ void setup() {
     abort();
   }
 
-  oled.printMM1Logo();
+  oled.printWISLogo();
 }
 
 //the buffer that will be filled and send to the Relay-Service
