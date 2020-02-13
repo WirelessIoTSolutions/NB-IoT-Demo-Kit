@@ -127,10 +127,10 @@ Once the installation has finished, go to **_'Tools → Board: … '_** and sele
 This project depends on the 'ArduinoJson' library to handle objects and arrays. Include the library by navigating to **_'Sketch → Include Library → Manage Libraries'_** and typing **_'ArduinoJson'_** into the search bar.
 \
 \
-_**NOTE:** Make sure to install a stable version and noneof the listed betas. We recommend using version 5.x._
+_**NOTE:** Make sure to install a stable version. We recommend using version 5.x._
 
 #### 2.2.4. Download the project files
-Finally, download the **_'tuino96nbiotclient'_** project from the [Wireless IoT Solutions GitHub page](https://github.com/mm1technology/demokit-nbiot-tuino096) page by either clicking on **_'clone or download'_** in the upper right corner of your screen and selecting
+Finally, download the **_'tuino96nbiotclient'_** project from the [Wireless IoT Solutions GitHub page](https://github.com/WirelessIoTSolutions/NB-IoT-Demo-Kit) page by either clicking on **_'clone or download'_** in the upper right corner of your screen and selecting
 **_'Download ZIP'_** or [cloning the project](https://docs.gitlab.com/ee/gitlab-basics/command-line-commands.html) using Git and shell commands.
 
 ### 2.2. Hardware setup
@@ -149,7 +149,7 @@ _**Note:** The Demo-Kit is shipped with the SIM already in place._
 
 #### 2.2.2. Connect the Sensors
 Before you can connect sensors, you need to attach the Base Shield onto the Tuino096 and set the power switch to 3.3V. Once the Base Shield
-is attached to the board, attach the sensors as specified below:
+is attached to the board, attach the sensors as specified below(if you want to use the code example with sensors):
 
 | **Sensor / Module** | **Connector** |
 | ------ | ------ |
@@ -178,13 +178,13 @@ First select a project template to start off with by choosing between NB-IoT and
 
 Each of these folders contains two subfolders.
 
-* If you have little experience with Arduino whatsoever, we recommend you start with the **_'TuinoBG96ClientWithSensors'_** project. Open the corresponding folder.
-* If you want to start from scratch or be more flexible, open **_'TuinoBG96ClientBasic'_**.
+* If you have little experience with Arduino and do not want to fiddle around with buffers and sensor data aquiring methods,  we recommend you start with the **_'TuinoBG96ClientWithSensors'_** project. Open the corresponding folder.
+* If you want to start "from scratch" or be more flexible, open **_'TuinoBG96ClientBasic'_**.
 
 Now double-click on the **_'.ino'_** file to load it into the Arduino IDE.
 
 ### 3.2. Adapting the code
-You will need to make a few changes to the code in the **_'.ino'_**. The parameters that you will need to set are explained and listed below. You will find
+You will need to make a few little changes to the code in the **_'.ino'_**. The parameters that you will need to set are explained and listed below. You will find
 all code segments that need to be adapted at the beginning of the **'.ino'** file.
 
 _**Note:** Before proceeding, make sure you have selected the Tuino096 Board by checking the port under **'Tools → Port → COM... (Tuino 096)'**._
@@ -226,7 +226,7 @@ If you are using a different provider than the ones listed in the code, just set
 ```
 
 #### 3.2.3. Set frequency band
-Set the frequency band of your operator (default is band 8), by uncommenting one of the following lines:
+Set the frequency band of your operator (default is band 8 for 1NCE), by uncommenting one of the following lines:
 
 ```
 /*FREQUENCY BAND BASED ON YOUR OPERATOR (look into bg96.h)*/
@@ -234,10 +234,14 @@ Set the frequency band of your operator (default is band 8), by uncommenting one
 //#define NBIOT_BAND      BG96_LTE_BAND_B20
 ```
 
-If you are using a different provider than the ones listed in the code, just set the last number of the macro according to your operator.
+If you are using a different provider than the ones listed in the code, just set the last number of the macro according to your operator. For instance:
+
+```
+#define NBIOT_BAND      BG96_LTE_BAND_B12
+```
 
 #### 3.2.4. Set endpoint
-Decide to which endpoint your want to send the data (default is the Wireless IoT Solutions NB-IoT Relay-Service):
+Decide to which endpoint your want to send the data (for instance the NB-IoT Relay-Service):
 
 ```
 /* ENDPOINT WHERE YOU WANT TO SEND DATA */
@@ -263,30 +267,22 @@ The **_'void setup()'_** function provides everything nessecary to configure NB-
 Just fill the **_'sensorDataBuf'_** with the sensor data and send it via the **_'SendMsgProcedure'_** as such:
 
 ```
-char sensorDataBuf[BUFLEN] = """"your sensor data(decide how you want to fill it)""""
+char sensorDataBuf[BUFLEN] = "your sensor data(decide how you want to fill it)"
 relayServiceClient.SendMsgProcedure(sensorDataBuf);
 ```
 
-Optionally, events can be triggered based on the answer of the endpoint (for instance from the Relay-Service) with the **_'commandsManager.handleBackchannelCommands();'_**
-function, that checks for data send by the endpoint. In the example, the data is received in a JSON array containing all nessecary infos
-for the device to handle the received command. The received JSON array looks like this:
+Optionally, events can be triggered based on the answer of the endpoint (for instance from the Relay-Service) with the **_'relayServiceClient.ContainsBackchannelPayload()'_**
+function, that checks for data send by the endpoint. In the example below there is a check whether the data that is received from the endpoint contains the string "test" and based on that there is a simple print, which looks like this:
 
 ```
-[ { "command":"oled",
-    "value":"Hallo" } ]
-```
-Here is how it works in the example project: First create a JSON array and fill it with the Payload received via the backchannel
-that contains the JSON array with the nessecary commands. Then hand it over to the **_'CommandsManager'_** classes **_'handleBackchannelCommands()'_**
-function. Feel free to modify the class to include additional commands.
-
-```
-StaticJsonBuffer<800> jsonBuffer2;
-JsonArray& array = jsonBuffer2.parseArray(relayServiceClient.GetBackchannelPayload());
-commandsManager.handleBackchannelCommands(array);
+if(relayServiceClient.ContainsBackchannelPayload("test") == SUCCESS)
+    Serial.println("It really does contain that!");
+  else
+    Serial.println("It does not contain the neccessary String!");
 ```
 
-#### 3.2.7. GPS Configuration
-Use the **_'TuinoBG96ClientWithSensors'_** example to learn how to get GPS data from the BG96 Modem:
+#### 3.2.7. GPS Configuration(might not work on some boards atm.)
+Use the **_'TuinoBG96ClientWithSensors'_** example to learn how to get GPS data from the BG96 Modem and put it into a JSON buffer:
 
 ```
 char latituteBuffer[14] = {'\0'};
@@ -314,30 +310,31 @@ how the code is running and what the program is doing at a specific moment. The 
 
 | **Output** | **Explanation** |
 | ------ | ------ |
-| *BG96_getIMSI OK : 90140510048xxxx* | Displayed when IMSI has succesfully been red form the SIM card |
-| *Sending ->AT+QCFG="nwscanseq",0301<-* | Displayed when initiating the scan sequence. The sequence is set to scan for NB-IoT (03) first and GSM (01) second |
-| *Sending ->AT+QCFG="band",F,0,80<-* | Displayed when setting the frequency band to any for GSM(F) and band 20 for NBIoT(80) |
-| *Sending ->AT+QICSGP=1,1,"iot.1nce.net","","",1<-* | Displayed when the APN Link has successfully been red from the SIM card |
-| *Sending ->AT+QGPS=1<-* | Displayed when activating the BG96s GPS functionality |
-| *Sending ->AT+QGPSCFG="nmeasrc",1<-* | Displayed when setting NMEA to periodically get GPS data |
+| *DEBUG - BG96 Modem Booting Success!* | Some booting info of the NB-IoT Modem(not so important for non WIS users), whether it was successful or not |
+| *DEBUG - BG96 Modem AT Echo Off!* | Disables the NB-IoT Modems Echo of AT-Commands send back from the Modem |
+| *DEBUG - BG96 MODEM Initialization Success!* | Some configs and tests of the NB-IoT Modem(not so important for non WIS users), whether they were successful or not |
+| *DEBUG - IMSI Read Correctly! -> 901405100488630* | Info about the IMSI of the SIM Card inside the board being read or not |
+| *DEBUG - NB-IoT Config Set!* | Info about whether the NB-IoT configs(for example Net Scan Priority) are set without error(depending on your #defines above) |
 
 #### 5.1.2. Output after setup for checking the connection
 
 | **Output** | **Explanation** |
 | ------ | ------ |
-| *+COPS: 1,2,"26201"<- SUCCESS* | Displayed when checking if the Demo Board is attached to the network(1) with the right operator(26201). If another operator is detected, the application initiates a connection to the selected operator | 
-| *+QNWINFO: "CAT-NB1","26201"<- SUCCESS* | Displayed when checking if the connection type is NBIoT(CAT-NB1). If another connection type is detected, the application initiates a connection via NB-IoT |
-| *Sending ->AT+QISTATE?<-* | Displayed when checking the state of the UDP socket for sending data |
-| *Sending ->AT+QIOPEN=1,0,"UDP","195.201......",<12345>,0,0<-* | Displayed when opening a socket, should the socket be closed |
+| *TIMEOUT -> Device currently not connected to NB-IoT* | Device is currently not connected to the base station via NB-IoT |
+| *Device currently connected to NB-IoT Operator with OP-Code:26201* | Device is connected to the base station via NB-IoT |
+| *TIMEOUT -> No Socket Currently Opened* | Device has currently no open socket to send data |
+| *DEBUG - Opening UDP Socket Nr.0 for IP: XXX.XXX.XXX.XXX, Port: XXXXX* | Device has currently an open socket to send data via UDP to ip "xxx" and port "xxx" |
 
 #### 5.1.3. Output after setup to send and receive data
 
 | **Output** | **Explanation** |
 | ------ | ------ |
-| *Finished Payload for Register:  _ _90140510048xxxx* | Registration instructions including the IMSI of the Demo Board's SIM card |
-| *Sending ->AT+QISEND=0,17<-* | Displayed when sending data via UDP |
-| *+QIRD: 0* | Datasize (in bytes) received over UART, typically be the response of the relay service, followed by the content of what exactly is received |
-| *Finished Payload for SendMsg: _ _rJyu{"humidity":39.4,"temp":24.2,"distance":3,"lightlum":79,"lightlux":147.3058}* | SendMsg instructions including all sensor data that will be send to the Relay-Service
+| *DEBUG - Registration to the Relay Service needed!* | Registration means the device has to ask the Relay Service whether it is authorized to send data by sending it the IMSI of the SIM Card |
+| *DEBUG - Transfer Data via UART to SOCKET: XX Bytes* | The Arm Chips, hence the users communication with the NB-IoT Modem is tracked by showing how many Bytes are send and received between him and the NB-IoT Modem |
+| *DEBUG - Sharedsecret: "XXXX"* | Not really a "secret", but an identification the Relay Service needs to differ between the devices, which is automatically send with every payload(so you don't have to send the IMSI of the SIM card all the time) |
+| *DEBUG - Sending Buffer with User Payload contains: "xxxxxxxxx"* | Shows the content of your buffer that will be send to the Relay Service(don't worry the first 6 Bytes are for identification and does not represent your individual payload you want to send) |
+| *DEBUG - Relay-Service DownChannel Payload received from Endpoint: "XXXX"* | The Payload send back to the NB-IoT Modem coming from the Relay Service |
+| *DEBUG - DownchannelBuffer doesn't contain: "XXXX"* | Output of the function |
 
 <a name="anchor6"></a>
 ## 6. Versioning
